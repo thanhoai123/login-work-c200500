@@ -23,13 +23,10 @@ if (!empty($_POST)) {
 //  ここにパスワードのチェック処理を完成させる
 //  		if( xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ) {
 // 				ログイン成功
-			if($stmt ->rowCount() >0){
-				if($email = $member['email']){
-					if(password_verify($password,$member['password'])){
-
-//  ここにセッションハイジャック対策を追加
-
-
+		if($member && password_verify($password,$member['password']) ) {
+		
+	   
+                session_regenerate_id(true); 
 				$_SESSION['id'] = $member['id'];
 				$_SESSION['time'] = time();
 
@@ -40,11 +37,8 @@ if (!empty($_POST)) {
 				}
 				header('Location: index2.php');
 				exit();
-			}
-		}
-
-    	}else{
-				// ログイン認証失敗
+            }else{
+			
 				$error['login'] = 'failed';
             } 
         }catch (PDOException $e){
